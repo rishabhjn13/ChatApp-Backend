@@ -60,9 +60,9 @@ export const login = async (req, res) => {
     if (!isPasswordCorrect) {
       return res.status(400).json({ message: "Invalid credentials" });
     }
-
+    console.log("Generating token for user:", user._id);
     generateToken(user._id, res);
-
+    console.log("User logged in:", user._id);
     res.status(200).json({
       _id: user._id,
       fullName: user.fullName,
@@ -110,6 +110,10 @@ export const updateProfile = async (req, res) => {
 
 export const checkAuth = (req, res) => {
   try {
+    console.log("checkAuth called", req.user);
+    if (!req.user) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
     res.status(200).json(req.user);
   } catch (error) {
     console.log("Error in checkAuth controller", error.message);
